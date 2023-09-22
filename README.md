@@ -15,6 +15,7 @@ make
 ```
 
 - Para ejecutar:
+- ./pokemon.c pokemon.c/correcto.txt
 
 ```bash
 línea de ejecución
@@ -23,6 +24,7 @@ línea de ejecución
 - Para ejecutar con valgrind:
 ```bash
 línea con valgrind
+valgrind --leak-check=check=full./pokemon.c
 ```
 ---
 ##  Funcionamiento
