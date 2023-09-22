@@ -148,7 +148,7 @@ const struct ataque *pokemon_buscar_ataque(pokemon_t *pokemon,
 int con_cada_pokemon(informacion_pokemon_t *ip, void (*f)(pokemon_t *, void *),
 		     void *aux)
 {
-	if (ip == NULL) {
+	if (ip == NULL || f == NULL) {
 		return 0;
 	}
 
