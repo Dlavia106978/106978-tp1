@@ -61,6 +61,9 @@ const char *pokemon_nombre(pokemon_t *pokemon)
 int con_cada_ataque(pokemon_t *pokemon,
 		    void (*f)(const struct ataque *, void *), void *aux)
 {
+	if(pokemon == NULL || f == NULL){
+		return 0;
+	}
 	int cantidad_aplicada = 0;
 	for (int i = 0; i < pokemon->tope; i++) {
 		f(pokemon->ataque[i], aux);
@@ -71,6 +74,9 @@ int con_cada_ataque(pokemon_t *pokemon,
 
 enum TIPO pokemon_tipo(pokemon_t *pokemon)
 {
+	if(pokemon == NULL){
+		return NORMAL;
+	}
 	return pokemon->tipo;
 }
 
