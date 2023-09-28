@@ -1,6 +1,5 @@
 #include "pokemon.h"
 #include "ataque.h"
-#include "tipo.h"
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -61,7 +60,7 @@ const char *pokemon_nombre(pokemon_t *pokemon)
 int con_cada_ataque(pokemon_t *pokemon,
 		    void (*f)(const struct ataque *, void *), void *aux)
 {
-	if(pokemon == NULL || f == NULL){
+	if (pokemon == NULL || f == NULL) {
 		return 0;
 	}
 	int cantidad_aplicada = 0;
@@ -74,7 +73,7 @@ int con_cada_ataque(pokemon_t *pokemon,
 
 enum TIPO pokemon_tipo(pokemon_t *pokemon)
 {
-	if(pokemon == NULL){
+	if (pokemon == NULL) {
 		return NORMAL;
 	}
 	return pokemon->tipo;
@@ -111,7 +110,7 @@ void cargar_ataque(pokemon_t *pokemon, char *linea)
 		return;
 	}
 	if (pokemon->tope >= MAX_ATAQUES) {
-		return; //
+		return; 
 	}
 
 	struct ataque *ataque = malloc(sizeof(struct ataque));
@@ -193,7 +192,6 @@ pokemon_t *pokemon_buscar(informacion_pokemon_t *ip,
 		return NULL;
 	}
 
-	printf("(%s) \n", pokemon_que_quiero_encontrar);
 	for (int i = 0; i < ip->cantidad_de_pokemones; i++) {
 		if (strcmp(ip->pokemon[i]->nombre,
 			   pokemon_que_quiero_encontrar) == 0) {
@@ -215,7 +213,6 @@ int contar_delimitador(char *linea)
 			cantida_de_delimitadores = -1;
 		}
 	}
-	printf("%s", linea);
 	return cantida_de_delimitadores;
 }
 void crear_pokemon(informacion_pokemon_t *info, char *linea)
@@ -304,5 +301,7 @@ informacion_pokemon_t *pokemon_cargar_archivo(const char *path)
 	}
 	info->cantidad_de_pokemones = nuevos_pokemones;
 	fclose(archivo);
+
 	return info;
 }
+
