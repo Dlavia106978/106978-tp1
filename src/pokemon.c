@@ -61,7 +61,7 @@ const char *pokemon_nombre(pokemon_t *pokemon)
 int con_cada_ataque(pokemon_t *pokemon,
 		    void (*f)(const struct ataque *, void *), void *aux)
 {
-	if(pokemon == NULL || f == NULL){
+	if (pokemon == NULL || f == NULL) {
 		return 0;
 	}
 	int cantidad_aplicada = 0;
@@ -74,7 +74,7 @@ int con_cada_ataque(pokemon_t *pokemon,
 
 enum TIPO pokemon_tipo(pokemon_t *pokemon)
 {
-	if(pokemon == NULL){
+	if (pokemon == NULL) {
 		return NORMAL;
 	}
 	return pokemon->tipo;
@@ -111,7 +111,7 @@ void cargar_ataque(pokemon_t *pokemon, char *linea)
 		return;
 	}
 	if (pokemon->tope >= MAX_ATAQUES) {
-		return; //
+		return;
 	}
 
 	struct ataque *ataque = malloc(sizeof(struct ataque));
@@ -128,7 +128,7 @@ void cargar_ataque(pokemon_t *pokemon, char *linea)
 			free(ataque);
 			return;
 		}
-		pokemon->ataque[pokemon->tope] = ataque; //.
+		pokemon->ataque[pokemon->tope] = ataque;
 		pokemon->tope++;
 
 	} else {
@@ -193,7 +193,6 @@ pokemon_t *pokemon_buscar(informacion_pokemon_t *ip,
 		return NULL;
 	}
 
-	printf("(%s) \n", pokemon_que_quiero_encontrar);
 	for (int i = 0; i < ip->cantidad_de_pokemones; i++) {
 		if (strcmp(ip->pokemon[i]->nombre,
 			   pokemon_que_quiero_encontrar) == 0) {
@@ -215,7 +214,6 @@ int contar_delimitador(char *linea)
 			cantida_de_delimitadores = -1;
 		}
 	}
-	printf("%s", linea);
 	return cantida_de_delimitadores;
 }
 void crear_pokemon(informacion_pokemon_t *info, char *linea)
@@ -223,7 +221,7 @@ void crear_pokemon(informacion_pokemon_t *info, char *linea)
 	if (info == NULL || info->cantidad_de_pokemones >= MAX_POKEMONES) {
 		return; //
 	}
-	pokemon_t *pokemon_actual = malloc(sizeof(pokemon_t));
+	pokemon_t *pokemon_actual = malloc(sizeof(pokemon_t)); //
 
 	if (pokemon_actual == NULL) {
 		return;
@@ -251,11 +249,12 @@ void crear_pokemon(informacion_pokemon_t *info, char *linea)
 
 informacion_pokemon_t *pokemon_cargar_archivo(const char *path)
 {
-	FILE *archivo = fopen(path, LECTURA);
-
 	if (path == NULL) {
 		return NULL;
 	}
+
+	FILE *archivo = fopen(path, LECTURA);
+
 	if (archivo == NULL) {
 		perror("Error al abrir el archivo");
 		return NULL;
@@ -266,32 +265,40 @@ informacion_pokemon_t *pokemon_cargar_archivo(const char *path)
 		fclose(archivo);
 		return NULL;
 	}
+	//
+	int x = 0;
 	info->cantidad_de_pokemones = 0;
 	char linea[100];
 	int cantidad_delimitador = 0;
 	while (fgets(linea, sizeof(linea), archivo) != NULL) {
 		cantidad_delimitador = contar_delimitador(linea);
+
 		if (cantidad_delimitador == -1) {
-			free(info);
+			//free(info);
 			fclose(archivo);
-			return NULL;
+			x++;
+			//return NULL;
+			break;
 		}
 
 		if (cantidad_delimitador != 1 && cantidad_delimitador != 2) {
-			free(info);
+			//free(info);
 			fclose(archivo);
-			return NULL;
+			//return NULL;
+			x++;
+			break;
 		}
+
 		if (cantidad_delimitador == 1) {
-			crear_pokemon(info, linea);
+			crear_pokemon(info, linea); //
 		} else if (cantidad_delimitador == 2) {
-			cargar_ataque(
+			cargar_ataque( //
 				info->pokemon[info->cantidad_de_pokemones - 1],
 				linea);
 		} else {
 			break;
 		}
-	}
+	} //
 
 	int nuevos_pokemones = 0;
 	for (int i = 0; i < info->cantidad_de_pokemones; i++) {
@@ -302,7 +309,13 @@ informacion_pokemon_t *pokemon_cargar_archivo(const char *path)
 			pokemon_destruir(info->pokemon[i]);
 		}
 	}
+	if (x != 0) {
+		free(info);
+		return NULL;
+	}
+
 	info->cantidad_de_pokemones = nuevos_pokemones;
 	fclose(archivo);
+
 	return info;
 }
