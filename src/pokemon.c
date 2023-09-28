@@ -61,6 +61,9 @@ const char *pokemon_nombre(pokemon_t *pokemon)
 int con_cada_ataque(pokemon_t *pokemon,
 		    void (*f)(const struct ataque *, void *), void *aux)
 {
+	if (pokemon == NULL || f == NULL) {
+		return 0;
+	}
 	int cantidad_aplicada = 0;
 	for (int i = 0; i < pokemon->tope; i++) {
 		f(pokemon->ataque[i], aux);
@@ -71,6 +74,9 @@ int con_cada_ataque(pokemon_t *pokemon,
 
 enum TIPO pokemon_tipo(pokemon_t *pokemon)
 {
+	if (pokemon == NULL) {
+		return NORMAL;
+	}
 	return pokemon->tipo;
 }
 
@@ -148,7 +154,7 @@ const struct ataque *pokemon_buscar_ataque(pokemon_t *pokemon,
 int con_cada_pokemon(informacion_pokemon_t *ip, void (*f)(pokemon_t *, void *),
 		     void *aux)
 {
-	if (ip == NULL) {
+	if (ip == NULL || f == NULL) {
 		return 0;
 	}
 
@@ -298,5 +304,6 @@ informacion_pokemon_t *pokemon_cargar_archivo(const char *path)
 	}
 	info->cantidad_de_pokemones = nuevos_pokemones;
 	fclose(archivo);
+
 	return info;
 }
